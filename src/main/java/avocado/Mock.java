@@ -5,9 +5,6 @@ import net.sf.cglib.proxy.Enhancer;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by root on 29.08.14.
- */
 public class Mock {
 
     public static ThreadLocal<Map<Object, MockTracker>> mockTrackerMap = new ThreadLocal<Map<Object, MockTracker>>() {
@@ -19,9 +16,9 @@ public class Mock {
 
     public static <T> T create(Class<T> clazz) {
         Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(clazz);
         MockTracker mockTracker = new MockTracker();
         enhancer.setCallback(mockTracker);
+        enhancer.setSuperclass(clazz);
         T proxy = (T)enhancer.create();
         mockTrackerMap.get().put(proxy, mockTracker);
 
